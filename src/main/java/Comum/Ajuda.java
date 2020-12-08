@@ -22,8 +22,6 @@ public class Ajuda extends javax.swing.JFrame {
             for(String line : allLines) {
                 if(!"".equals(line)) {
                     textoFinal += line;
-                } else {
-                    textoFinal += "\n";
                 }
                 textoFinal += "\n";
             }

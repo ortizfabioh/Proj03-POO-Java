@@ -4,11 +4,11 @@ import javax.swing.ImageIcon;
 
 public class Sobre extends javax.swing.JFrame {
 
-    public static final String autor = "Grupo B-9";
-    public static final String sysName = "Projeto 2 de POO II - Conversor de medidas";
+    public static final String autor = "Fábio Hideki Ortiz";
+    public static final String sysName = "Projeto 3 de POO II - Sistema de semáforos";
     public static final String copyRight = "Copyright \u00A9 2020. " + autor + ". All rights reserved.";
-    public static final String missao = "Converter medidas utilizadas no cotidiano, que são:\nComprimento, Área, Volume de líquido e Massa";
-    public static final String data = "Novembro, 2020";
+    public static final String missao = "Apresentar um sistema de servidor capaz de controlar várias\ninstâncias de semáforos";
+    public static final String data = "Dezembro, 2020";
     public static final String versao = "Ver. 1.0";
     public static final String dir = "logo.GIF";
     
@@ -21,7 +21,7 @@ public class Sobre extends javax.swing.JFrame {
         imagem.setIcon(new ImageIcon(diretorio));
         
         StringBuilder textoFinal = new StringBuilder();
-        textoFinal.append(sysName+"\n"+versao+" - "+data+"\n\n"+missao+"\n\n"+autor+"\n\n\n"+copyRight+"\n");
+        textoFinal.append(sysName+"\n"+versao+" - "+data+"\n\n"+missao+"\n\n\n"+autor+"\n\n"+copyRight+"\n");
         texto.setText(textoFinal.toString());
     }
 

@@ -1,1 +1,10 @@
-Texto qualquer para representar um texto de ajuda
+Ao abrir a tela inicial do servidor, acima terão algumas opções:
+
+Arquivo
+     - Novo Cliente: Abrir uma tela de cliente, e verificar o 
+       funcionamento dos semáforos daquele cliente
+     - Sair: Fechar o sistema
+
+Ajuda
+     - Ajuda: Tela onde estão descritos as funções do sistema
+     - Sobre: Tela que mostra os créditos dos desenvolvedores

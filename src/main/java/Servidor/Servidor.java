@@ -1,13 +1,30 @@
 package Servidor;
 
-import Comum.Ajuda;
-import Comum.Sobre;
+import Cliente.Cliente;
+import Comum.*;
+import java.io.IOException;
+import java.net.*;
 
 public class Servidor extends javax.swing.JFrame {
 
-    public Servidor() {
+    EchoServidor servidor;
+    
+    public void texto() {
+        while(true) {
+            String ip = servidor.receberIp().toString();
+            int porta = servidor.receberPorta();
+            String msg = servidor.receberMensagem();
+            campoTexto.setText("***"+ip+":"+porta+" >>> "+msg);
+        }
+    }
+    
+    public Servidor() throws IOException {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        servidor = new EchoServidor();
+        
+
     }
 
     /**
@@ -19,8 +36,12 @@ public class Servidor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        campoTexto = new javax.swing.JTextArea();
         menuBar = new javax.swing.JMenuBar();
         menuArquivo = new javax.swing.JMenu();
+        menuItemTelaCliente = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuItemSair = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         menuItemAjuda = new javax.swing.JMenuItem();
@@ -28,7 +49,21 @@ public class Servidor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        campoTexto.setEditable(false);
+        campoTexto.setColumns(20);
+        campoTexto.setRows(5);
+        jScrollPane1.setViewportView(campoTexto);
+
         menuArquivo.setText("Arquivo");
+
+        menuItemTelaCliente.setText("Novo Cliente");
+        menuItemTelaCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemTelaClienteActionPerformed(evt);
+            }
+        });
+        menuArquivo.add(menuItemTelaCliente);
+        menuArquivo.add(jSeparator1);
 
         menuItemSair.setText("Sair");
         menuItemSair.addActionListener(new java.awt.event.ActionListener() {
@@ -66,11 +101,11 @@ public class Servidor extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
         );
 
         pack();
@@ -89,6 +124,18 @@ public class Servidor extends javax.swing.JFrame {
     private void menuItemSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSairActionPerformed
         System.exit(0);
     }//GEN-LAST:event_menuItemSairActionPerformed
+    private void menuItemTelaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemTelaClienteActionPerformed
+        try {
+            Cliente cliente = new Cliente();
+            cliente.setVisible(true);
+            cliente.setAlwaysOnTop(true);
+            
+            servidor.start();
+            texto();
+        } catch (SocketException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_menuItemTelaClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -120,17 +167,27 @@ public class Servidor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Servidor().setVisible(true);
+                try {
+                    new Servidor().setVisible(true);
+                } catch (SocketException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea campoTexto;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuArquivo;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuItemAjuda;
     private javax.swing.JMenuItem menuItemSair;
     private javax.swing.JMenuItem menuItemSobre;
+    private javax.swing.JMenuItem menuItemTelaCliente;
     // End of variables declaration//GEN-END:variables
 }
