@@ -12,11 +12,10 @@ public class Sobre extends javax.swing.JFrame {
     public static final String versao = "Ver. 1.0";
     public static final String dir = "logo.GIF";
     
-    private static final String diretorio = System.getProperty("user.dir")+"\\resources\\"+dir;
+    protected static final String diretorio = System.getProperty("user.dir")+"\\resources\\"+dir;
     
     public Sobre() {
         initComponents();
-        this.setLocationRelativeTo(null);
         
         imagem.setIcon(new ImageIcon(diretorio));
         
@@ -44,7 +43,7 @@ public class Sobre extends javax.swing.JFrame {
         menuAjuda = new javax.swing.JMenu();
         menuItemAjuda = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         texto.setEditable(false);
         texto.setColumns(20);
@@ -115,6 +114,7 @@ public class Sobre extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void fecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharActionPerformed

@@ -2,23 +2,23 @@ package Servidor;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-        
+import java.util.*;
+
 public class EchoServidor extends Thread {
     private DatagramSocket socket;
     private String recebido;
     private InetAddress ip;
     private int porta;
+    private boolean running = true;
     
-    public EchoServidor() throws SocketException {
+    public EchoServidor() throws SocketException, IOException {
         socket = new DatagramSocket(80);
     }
     
     @Override
     public void run() {
-        boolean running = true;
         while(running) {
+            //lista.clear();
             byte[] buffer = new byte[256];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
             
@@ -34,19 +34,21 @@ public class EchoServidor extends Thread {
             
             recebido = new String(packet.getData(), 0, packet.getLength());
 
-            // NESSE PONTO AS MENSAGENS ESTÃO CHEGANDO
-            if(recebido.equals("ON")) {
-                System.out.println("### "+ip+":"+porta+" >>> ON");
-                System.out.println("Cliente adicionou semáforo de identificação --> "+ip+":"+porta);
-            }
+            /*
+            Pacotes recebidos não se agrupam na msm lista;
+            Nova thread deve ou não ser outro arquivo?
+            */
             
-            if(recebido.equals("OFF")) {
-                System.out.println("### "+ip+":"+porta+" >>> OFF");
-                System.out.println("Cliente removeu semáforo de identificação --> "+ip+":"+porta);
+            // NESSE PONTO AS MENSAGENS ESTÃO CHEGANDO E EXECUTA O TEMPO TODO
+            if(recebido.equals("ON")) {  // Cliente se conectou
+                recebido = "###"+ip+":"+porta+" >>> ON\n"+"ADICIONADO --> "+ip+":"+porta+"\n";
+            } else if(recebido.equals("OFF")) {  // Cliente se desconectou
+                recebido = "###"+ip+":"+porta+" >>> OFF\n"+"REMOVIDO --> "+ip+":"+porta+"\n";
                 running = false;
-                continue;
+            } else {  // A mensagem é comum
+                recebido = "***"+ip+":"+porta+" >>> "+recebido+"\n";
             }
-            System.out.println("*** "+ip+":"+porta+" >>> "+recebido);
+            recebido += "\n";
         }
         socket.close();
     }
@@ -61,5 +63,9 @@ public class EchoServidor extends Thread {
     
     public String receberMensagem() {
         return recebido;
+    }
+    
+    public boolean receberRunning() {
+        return running;
     }
 }

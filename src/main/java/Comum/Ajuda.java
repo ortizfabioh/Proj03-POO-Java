@@ -10,7 +10,6 @@ public class Ajuda extends javax.swing.JFrame {
 
     public Ajuda() {
         initComponents();
-        this.setLocationRelativeTo(null);
         
         String dir = System.getProperty("user.dir")+"\\resources\\logo.GIF";
         imagem.setIcon(new ImageIcon(dir));
@@ -52,7 +51,7 @@ public class Ajuda extends javax.swing.JFrame {
         menuAjuda = new javax.swing.JMenu();
         menuItemSobre = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         texto.setEditable(false);
         texto.setColumns(20);
@@ -122,6 +121,7 @@ public class Ajuda extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void fecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharActionPerformed
