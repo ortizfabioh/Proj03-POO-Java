@@ -9,7 +9,7 @@ public class EchoCliente extends Thread{
     public EchoCliente() throws SocketException {
         socket = new DatagramSocket();
     }
-    
+  
     public void enviarEcho(String msg) throws UnknownHostException, SocketException, IOException {
         byte[] msgBuf = msg.getBytes();
         InetAddress enderecoDestino = InetAddress.getLocalHost();

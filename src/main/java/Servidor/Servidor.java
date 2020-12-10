@@ -4,24 +4,40 @@ import Cliente.Cliente;
 import Comum.*;
 import java.io.IOException;
 import java.net.*;
+import java.util.*;
 import javax.swing.text.DefaultCaret;
 
 public class Servidor extends javax.swing.JFrame {
-
+    EchoServidor servidor; 
+    ThreadTexto thread;
+    
     class ThreadTexto extends Thread {    
         @Override
         public void run() {
             while(true) {
-                String msg = servidor.receberMensagem();
+                String recebido = servidor.receberMensagem();
+                InetAddress ip = servidor.receberIp();
+                int porta = servidor.receberPorta();
+                String msg;
+                ArrayList<String> lista = new ArrayList<>();
 
-                if(msg != null) {
-                    campoTexto.append(msg);
+                if(recebido != null) {  // Se cliente está conectado
+                    if(recebido.equals("ON")) {  // Cliente se conectou
+                        campoTexto.append("###"+ip+":"+porta+" >>> ON\n"+"ADICIONADO --> "+ip+":"+porta+"\n\n");
+                    } else if(recebido.equals("OFF")) {  // Cliente se desconectou
+                        campoTexto.append("###"+ip+":"+porta+" >>> OFF\n"+"REMOVIDO --> "+ip+":"+porta+"\n\n");
+                    } else {  // A mensagem é uma cor
+                        lista.add("***"+ip+":"+porta+" >>> "+recebido+"\n");
+                    }
                 }
-
-                if(!servidor.receberRunning()) {
-                    msg = null;
+                if(lista.size() > 0) {
+                    campoTexto.append("Clientes conectados ("+lista.size()+")\n");
+                    for(int i=0; i<lista.size(); i++) {
+                        campoTexto.append(lista.get(i));
+                    }
+                    campoTexto.append("\n");
                 }
-
+                
                 // Mantém o scroll embaixo
                 DefaultCaret caret = (DefaultCaret)campoTexto.getCaret();
                 caret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
@@ -34,9 +50,6 @@ public class Servidor extends javax.swing.JFrame {
             }
         }
     }
-    
-    EchoServidor servidor; 
-    ThreadTexto thread;
     
     public Servidor() throws IOException {
         initComponents();
@@ -121,11 +134,11 @@ public class Servidor extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
         );
 
         pack();
