@@ -1,5 +1,10 @@
 package Servidor;
 
+/*
+Lista de instancias deveria ser criada no EchoServidor?
+Parar a execução de cada instancia depois de mostrar OFF uma vez
+*/
+
 import Cliente.Cliente;
 import Comum.*;
 import java.io.IOException;

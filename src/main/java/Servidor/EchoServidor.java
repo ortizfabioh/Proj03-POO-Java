@@ -2,15 +2,17 @@ package Servidor;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EchoServidor extends Thread {
-    private DatagramSocket socket;
+    private MulticastSocket socket;
     private String recebido;
     private InetAddress ip;
     private int porta;
     
-    public EchoServidor() throws SocketException, IOException {
-        socket = new DatagramSocket(80);
+    public EchoServidor() throws IOException {
+        socket = new MulticastSocket(80);
     }
     
     @Override

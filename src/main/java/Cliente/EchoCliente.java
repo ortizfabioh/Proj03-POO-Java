@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.net.*;
 
 public class EchoCliente extends Thread{
-    private DatagramSocket socket;
+    private MulticastSocket socket;
 
-    public EchoCliente() throws SocketException {
-        socket = new DatagramSocket();
+    public EchoCliente() throws IOException {
+        socket = new MulticastSocket();
     }
   
     public void enviarEcho(String msg) throws UnknownHostException, SocketException, IOException {
