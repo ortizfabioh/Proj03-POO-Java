@@ -1,11 +1,11 @@
 package Servidor;
 
 /*
-Lista de instancias deveria ser criada no EchoServidor?
-Parar a execução de cada instancia depois de mostrar OFF uma vez
+Instâncias não sestão sendo agrupadas em uma única lista
+Criar uma função q fique cadastrando as mensagens não repetidas na lista durante o período de cada execução
 */
 
-import Cliente.Cliente;
+import Cliente.*;
 import Comum.*;
 import java.io.IOException;
 import java.net.*;
@@ -15,30 +15,19 @@ import javax.swing.text.DefaultCaret;
 public class Servidor extends javax.swing.JFrame {
     EchoServidor servidor; 
     ThreadTexto thread;
+    EchoCliente cliente = new EchoCliente();
     
     class ThreadTexto extends Thread {    
         @Override
         public void run() {
             while(true) {
-                String recebido = servidor.receberMensagem();
-                InetAddress ip = servidor.receberIp();
-                int porta = servidor.receberPorta();
-                String msg;
-                ArrayList<String> lista = new ArrayList<>();
-
-                if(recebido != null) {  // Se cliente está conectado
-                    if(recebido.equals("ON")) {  // Cliente se conectou
-                        campoTexto.append("###"+ip+":"+porta+" >>> ON\n"+"ADICIONADO --> "+ip+":"+porta+"\n\n");
-                    } else if(recebido.equals("OFF")) {  // Cliente se desconectou
-                        campoTexto.append("###"+ip+":"+porta+" >>> OFF\n"+"REMOVIDO --> "+ip+":"+porta+"\n\n");
-                    } else {  // A mensagem é uma cor
-                        lista.add("***"+ip+":"+porta+" >>> "+recebido+"\n");
-                    }
-                }
+                LinkedHashSet<String> lista = new LinkedHashSet<>();
+                lista = servidor.receberLista();
+                
+                campoTexto.append("Clientes conectados ("+lista.size()+")\n");
                 if(lista.size() > 0) {
-                    campoTexto.append("Clientes conectados ("+lista.size()+")\n");
-                    for(int i=0; i<lista.size(); i++) {
-                        campoTexto.append(lista.get(i));
+                    for(String i : lista) {
+                        campoTexto.append(i);
                     }
                     campoTexto.append("\n");
                 }
@@ -47,7 +36,7 @@ public class Servidor extends javax.swing.JFrame {
                 DefaultCaret caret = (DefaultCaret)campoTexto.getCaret();
                 caret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
                 try {
-                    Thread.sleep(2*1000);  // Tempo de execução *Deve ser igual ao tempo do timer do cliente*
+                    Thread.sleep(cliente.tempoExecucao());  // Tempo de execução *Deve ser igual ao tempo do timer do cliente*
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -169,6 +158,8 @@ public class Servidor extends javax.swing.JFrame {
             cliente.setVisible(true);
             cliente.setAlwaysOnTop(true);
         } catch (SocketException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_menuItemTelaClienteActionPerformed

@@ -5,6 +5,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Cliente extends javax.swing.JFrame {
     EchoCliente cliente;
@@ -50,7 +52,7 @@ public class Cliente extends javax.swing.JFrame {
         }
     }
     
-    public Cliente() throws SocketException {
+    public Cliente() throws SocketException, IOException {
         initComponents();
         
         semaforo.setLayout(new GridLayout(1, 3));
@@ -206,7 +208,7 @@ public class Cliente extends javax.swing.JFrame {
                     }
                 }
             };
-            t.schedule(tt, 2*1000, 2*1000); // Primeiro tempo, período
+            t.schedule(tt, cliente.tempoExecucao(), cliente.tempoExecucao()); // Primeiro tempo, período
             
             iniciar.setEnabled(false);  // Desabilitar botão
         } catch (IOException ex) {
@@ -247,6 +249,8 @@ public class Cliente extends javax.swing.JFrame {
                 try {
                     new Cliente().setVisible(true);
                 } catch (SocketException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }

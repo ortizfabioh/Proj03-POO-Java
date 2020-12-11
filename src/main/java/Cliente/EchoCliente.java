@@ -12,7 +12,7 @@ public class EchoCliente extends Thread{
   
     public void enviarEcho(String msg) throws UnknownHostException, SocketException, IOException {
         byte[] msgBuf = msg.getBytes();
-        InetAddress enderecoDestino = InetAddress.getLocalHost();
+        InetAddress enderecoDestino = InetAddress.getByName("255.255.255.255");
 
         DatagramPacket packet = new DatagramPacket(msgBuf, msgBuf.length, enderecoDestino, 80);
         socket.send(packet);
@@ -25,6 +25,10 @@ public class EchoCliente extends Thread{
     public void fechar() throws SocketException, IOException {
         enviarEcho("OFF");
         socket.close();
+    }
+    
+    public int tempoExecucao() {
+        return 2*1000;
     }
 }
 
