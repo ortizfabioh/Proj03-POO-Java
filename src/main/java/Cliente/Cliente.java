@@ -5,49 +5,48 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Cliente extends javax.swing.JFrame {
-    EchoCliente cliente;
-    Timer t;
-    TimerTask tt;
+    private EchoCliente cliente;
+    
+    private Timer t;
+    private TimerTask tt;
     
     private int corAtual=2;
-    String msg;
+    private String msg;
     
     private final Lente vermelho = new Lente(Color.red);
     private final Lente amarelo = new Lente(Color.yellow);
     private final Lente verde = new Lente(Color.green);
     
-    public void setVermelho() {
+    private void setVermelho() {
         vermelho.ligar();
         amarelo.desligar();
         verde.desligar();
         corAtual = 0;
         msg = "VERMELHO";
     }
-    public void setVerde() {
+    private void setVerde() {
         vermelho.desligar();
         amarelo.desligar();
         verde.ligar();
         corAtual = 1;
         msg = "VERDE";
     }
-    public void setAmarelo() {
+    private void setAmarelo() {
         vermelho.desligar();
         amarelo.ligar();
         verde.desligar();
         corAtual = 2;
         msg = "AMARELO";
     }
-    public void proximo(int c) {
+    private void proximo(int c) {
         switch(c) {
-            case 0:
+            case 0:  // Se tá vermelho
                 setVerde(); break;
-            case 1:
+            case 1:  // Se tá verde
                 setAmarelo(); break;
-            case 2:
+            case 2:  // Se tá amarelo
                 setVermelho(); break;
         }
     }
@@ -55,6 +54,7 @@ public class Cliente extends javax.swing.JFrame {
     public Cliente() throws SocketException, IOException {
         initComponents();
         
+        // Adiciona os locais onde os faróis irão aparecer
         semaforo.setLayout(new GridLayout(1, 3));
         semaforo.add(vermelho);
         semaforo.add(amarelo);
@@ -198,11 +198,8 @@ public class Cliente extends javax.swing.JFrame {
                 public void run() {
                     proximo(corAtual);
                     
-                    // Implementar aqui o envio de mensagem para o servidor
                     try {
                         cliente.enviarEcho(msg);
-                    } catch (SocketException ex) {
-                        ex.printStackTrace();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -248,8 +245,6 @@ public class Cliente extends javax.swing.JFrame {
             public void run() {
                 try {
                     new Cliente().setVisible(true);
-                } catch (SocketException ex) {
-                    ex.printStackTrace();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

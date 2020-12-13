@@ -1,21 +1,15 @@
 package Servidor;
 
-/*
-Instâncias não sestão sendo agrupadas em uma única lista
-Criar uma função q fique cadastrando as mensagens não repetidas na lista durante o período de cada execução
-*/
-
 import Cliente.*;
 import Comum.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
-import javax.swing.text.DefaultCaret;
 
 public class Servidor extends javax.swing.JFrame {
-    EchoServidor servidor; 
-    ThreadTexto thread;
-    EchoCliente cliente = new EchoCliente();
+    private EchoServidor servidor; 
+    private ThreadTexto thread;
+    private EchoCliente c = new EchoCliente();  // Pra poder usar o método tempoExecucao
     
     class ThreadTexto extends Thread {    
         @Override
@@ -24,19 +18,18 @@ public class Servidor extends javax.swing.JFrame {
                 LinkedHashSet<String> lista = new LinkedHashSet<>();
                 lista = servidor.receberLista();
                 
-                campoTexto.append("Clientes conectados ("+lista.size()+")\n");
-                if(lista.size() > 0) {
+                campoTexto.append("Clientes conectados ("+lista.size()+")\n");  // Fica  mostrando mesmo se não tiver nenhum cliente conectado
+                if(lista.size() > 0) {  // Existe cliente conectado
                     for(String i : lista) {
                         campoTexto.append(i);
                     }
                     campoTexto.append("\n");
                 }
                 
-                // Mantém o scroll embaixo
-                campoTexto.setCaretPosition(campoTexto.getDocument().getLength());
+                campoTexto.setCaretPosition(campoTexto.getDocument().getLength());  // Mantém o scroll embaixo
                 
                 try {
-                    Thread.sleep(cliente.tempoExecucao());  // Tempo de execução *Deve ser igual ao tempo do timer do cliente*
+                    Thread.sleep(c.tempoExecucao());  // Tempo de execução *Deve ser igual ao tempo do timer do cliente*
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -157,8 +150,6 @@ public class Servidor extends javax.swing.JFrame {
             Cliente cliente = new Cliente();
             cliente.setVisible(true);
             cliente.setAlwaysOnTop(true);
-        } catch (SocketException ex) {
-            ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -196,8 +187,6 @@ public class Servidor extends javax.swing.JFrame {
             public void run() {
                 try {
                     new Servidor().setVisible(true);
-                } catch (SocketException ex) {
-                    ex.printStackTrace();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

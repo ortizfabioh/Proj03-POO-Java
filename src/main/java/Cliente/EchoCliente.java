@@ -10,24 +10,24 @@ public class EchoCliente extends Thread{
         socket = new MulticastSocket();
     }
   
-    public void enviarEcho(String msg) throws UnknownHostException, SocketException, IOException {
+    public void enviarEcho(String msg) throws IOException {  // Função que envia a mensagem
         byte[] msgBuf = msg.getBytes();
         InetAddress enderecoDestino = InetAddress.getByName("255.255.255.255");
 
-        DatagramPacket packet = new DatagramPacket(msgBuf, msgBuf.length, enderecoDestino, 80);
+        DatagramPacket packet = new DatagramPacket(msgBuf, msgBuf.length, enderecoDestino, 80);  // Envia a mensagem na porta 80
         socket.send(packet);
     }
     
-    public void login() throws SocketException, IOException {
+    public void login() throws IOException {  // "Estou me conectando"
         enviarEcho("ON");
     }
     
-    public void fechar() throws SocketException, IOException {
+    public void fechar() throws IOException {  // "To saindo"
         enviarEcho("OFF");
         socket.close();
     }
     
-    public int tempoExecucao() {
+    public int tempoExecucao() {  // Facilitar a escrita do tempo de execução
         return 2*1000;
     }
 }

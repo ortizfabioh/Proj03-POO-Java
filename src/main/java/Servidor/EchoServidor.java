@@ -6,16 +6,16 @@ import java.util.*;
 
 public class EchoServidor extends Thread {
     private MulticastSocket socket;
+    
     private String recebido;
-    private InetAddress ip;
-    private int porta;
     private String msg;
     private LinkedHashSet<String> lista = new LinkedHashSet<>();  // Não aceita duplicatas
     
     public EchoServidor() throws IOException {
-        socket = new MulticastSocket(80);
+        socket = new MulticastSocket(80);  // Fica ouvindo a porta 80
     }
     
+    // Fica executando eternamente para ouvir por mensagens
     @Override
     public void run() {        
         while(true) {
@@ -23,7 +23,7 @@ public class EchoServidor extends Thread {
             byte[] buffer = new byte[256];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
-            long fim = System.currentTimeMillis() + 2000;
+            long fim = System.currentTimeMillis() + 2000;  // Momento exatamente daqui 2 segundos
             while(System.currentTimeMillis() < fim) {  // Executar por 2 segundos
                 try {
                     socket.receive(packet);
@@ -31,8 +31,8 @@ public class EchoServidor extends Thread {
                     e.printStackTrace();
                 }
 
-                ip = packet.getAddress();
-                porta = packet.getPort();
+                InetAddress ip = packet.getAddress();
+                int porta = packet.getPort();
                 byte[] buf = packet.getData();
 
                 recebido = new String(packet.getData(), 0, packet.getLength());
@@ -45,16 +45,15 @@ public class EchoServidor extends Thread {
                     msg = "***"+ip+":"+porta+" >>> "+recebido+"\n";
                 }
 
-                // PACOTES RECEBIDOS DEVEM SER AGRUPADOS AQUI
                 lista.add(msg);
             }
         }
     }
     
     public LinkedHashSet<String> receberLista() {
-        LinkedHashSet clone = new LinkedHashSet<>();
-        clone = (LinkedHashSet)lista.clone();
-        lista.clear();
+        LinkedHashSet clone = new LinkedHashSet<>();  // Uma lista clone é criada a cada chamada
+        clone = (LinkedHashSet)lista.clone();  // Cria um clone da lista
+        lista.clear();  // Limpa a lista
         return clone;
     }
 }
