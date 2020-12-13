@@ -33,8 +33,8 @@ public class Servidor extends javax.swing.JFrame {
                 }
                 
                 // Mantém o scroll embaixo
-                DefaultCaret caret = (DefaultCaret)campoTexto.getCaret();
-                caret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
+                campoTexto.setCaretPosition(campoTexto.getDocument().getLength());
+                
                 try {
                     Thread.sleep(cliente.tempoExecucao());  // Tempo de execução *Deve ser igual ao tempo do timer do cliente*
                 } catch (InterruptedException e) {
