@@ -4,10 +4,7 @@ import Cliente.*;
 import Comum.*;
 import java.awt.Color;
 import java.io.IOException;
-import java.net.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -17,14 +14,12 @@ public class Servidor extends javax.swing.JFrame {
     private EchoServidor servidor; 
     private ThreadTexto thread;
     private EchoCliente c = new EchoCliente();  // Pra poder usar o método tempoExecucao
-    
-    Style padrao, negrito, vermelho;
-    
+        
     class ThreadTexto extends Thread {    
         @Override
         public void run() {
             Style padrao = pane.addStyle("padrao", null);
-            StyleConstants.setFontSize(padrao, 12);
+            StyleConstants.setFontSize(padrao, 15);
             Style negrito = pane.addStyle("negrito", null);
             StyleConstants.setBold(negrito, true);
             Style vermelho = pane.addStyle("vermelho", negrito);
@@ -44,20 +39,16 @@ public class Servidor extends javax.swing.JFrame {
                     if(lista.size() > 0) {  // Existe cliente conectado
                         for(String i : lista) {
                             String[] split = i.split("> ");  // Separa a mensgem da identificação
-                            doc.insertString(doc.getLength(), split[0], padrao);
-                            switch(split[1]) {
+                            doc.insertString(doc.getLength(), split[0], padrao);  // Printa identificação
+                            switch(split[1]) {  // printa mensagem
                                 case "VERMELHO\n":
-                                    doc.insertString(doc.getLength(), " "+split[1], vermelho);
-                                    break;
+                                    doc.insertString(doc.getLength(), " "+split[1], vermelho); break;
                                 case "AMARELO\n":
-                                    doc.insertString(doc.getLength(), " "+split[1], amarelo);
-                                    break;
+                                    doc.insertString(doc.getLength(), " "+split[1], amarelo); break;
                                 case "VERDE\n":
-                                    doc.insertString(doc.getLength(), " "+split[1], verde);
-                                    break;
+                                    doc.insertString(doc.getLength(), " "+split[1], verde); break;
                                 default:  // ON e OFF
-                                    doc.insertString(doc.getLength(), " "+split[1], negrito);
-                                    break;
+                                    doc.insertString(doc.getLength(), " "+split[1], negrito); break;
                             }
                         }
                         doc.insertString(doc.getLength(), "\n", null);
@@ -74,21 +65,16 @@ public class Servidor extends javax.swing.JFrame {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         }
     }
     
     public Servidor() throws IOException {
         initComponents();
-        
-        
-        
-        // Receber mensagem
+
         servidor = new EchoServidor();
         servidor.start();
         
-        // Escrever mensagem recebida no campo de texto
         thread = new ThreadTexto();
         thread.setDaemon(true);  // Daemon Thread é pra oferecer serviço à Thread User
         thread.start();
