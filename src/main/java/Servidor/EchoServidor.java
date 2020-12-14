@@ -38,9 +38,9 @@ public class EchoServidor extends Thread {
                 recebido = new String(packet.getData(), 0, packet.getLength());
 
                 if(recebido.equals("ON")) {  // Cliente se conectou
-                    msg = "###"+ip+":"+porta+" >>> ON\n"+"ADICIONADO --> "+ip+":"+porta+"\n";
+                    msg = "###"+ip+":"+porta+" >>> ON\n";
                 } else if(recebido.equals("OFF")) {  // Cliente se desconectou
-                    msg = "###"+ip+":"+porta+" >>> OFF\n"+"REMOVIDO --> "+ip+":"+porta+"\n";
+                    msg = "###"+ip+":"+porta+" >>> OFF\n";
                 } else {  // A mensagem é uma cor
                     msg = "***"+ip+":"+porta+" >>> "+recebido+"\n";
                 }

@@ -2,31 +2,72 @@ package Servidor;
 
 import Cliente.*;
 import Comum.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class Servidor extends javax.swing.JFrame {
     private EchoServidor servidor; 
     private ThreadTexto thread;
     private EchoCliente c = new EchoCliente();  // Pra poder usar o método tempoExecucao
     
+    Style padrao, negrito, vermelho;
+    
     class ThreadTexto extends Thread {    
         @Override
         public void run() {
+            Style padrao = pane.addStyle("padrao", null);
+            StyleConstants.setFontSize(padrao, 12);
+            Style negrito = pane.addStyle("negrito", null);
+            StyleConstants.setBold(negrito, true);
+            Style vermelho = pane.addStyle("vermelho", negrito);
+            StyleConstants.setForeground(vermelho, Color.RED);
+            Style amarelo = pane.addStyle("amarelo", negrito);
+            StyleConstants.setForeground(amarelo, Color.YELLOW);
+            Style verde = pane.addStyle("verde", negrito);
+            StyleConstants.setForeground(verde, Color.GREEN);
+
             while(true) {
                 LinkedHashSet<String> lista = new LinkedHashSet<>();
                 lista = servidor.receberLista();
+                StyledDocument doc = (StyledDocument)pane.getDocument();
                 
-                campoTexto.append("Clientes conectados ("+lista.size()+")\n");  // Fica  mostrando mesmo se não tiver nenhum cliente conectado
-                if(lista.size() > 0) {  // Existe cliente conectado
-                    for(String i : lista) {
-                        campoTexto.append(i);
+                try {
+                    doc.insertString(doc.getLength(), "Clientes conectados ("+lista.size()+")\n", padrao);
+                    if(lista.size() > 0) {  // Existe cliente conectado
+                        for(String i : lista) {
+                            String[] split = i.split("> ");  // Separa a mensgem da identificação
+                            doc.insertString(doc.getLength(), split[0], padrao);
+                            switch(split[1]) {
+                                case "VERMELHO\n":
+                                    doc.insertString(doc.getLength(), " "+split[1], vermelho);
+                                    break;
+                                case "AMARELO\n":
+                                    doc.insertString(doc.getLength(), " "+split[1], amarelo);
+                                    break;
+                                case "VERDE\n":
+                                    doc.insertString(doc.getLength(), " "+split[1], verde);
+                                    break;
+                                default:  // ON e OFF
+                                    doc.insertString(doc.getLength(), " "+split[1], negrito);
+                                    break;
+                            }
+                        }
+                        doc.insertString(doc.getLength(), "\n", null);
                     }
-                    campoTexto.append("\n");
+                    
+                } catch (BadLocationException ex) {
+                    ex.printStackTrace();
                 }
                 
-                campoTexto.setCaretPosition(campoTexto.getDocument().getLength());  // Mantém o scroll embaixo
+                pane.setCaretPosition(pane.getDocument().getLength());  // Mantém o scroll embaixo
                 
                 try {
                     Thread.sleep(c.tempoExecucao());  // Tempo de execução *Deve ser igual ao tempo do timer do cliente*
@@ -40,6 +81,8 @@ public class Servidor extends javax.swing.JFrame {
     
     public Servidor() throws IOException {
         initComponents();
+        
+        
         
         // Receber mensagem
         servidor = new EchoServidor();
@@ -55,8 +98,8 @@ public class Servidor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        campoTexto = new javax.swing.JTextArea();
+        JScrollPane1 = new javax.swing.JScrollPane();
+        pane = new javax.swing.JTextPane();
         menuBar = new javax.swing.JMenuBar();
         menuArquivo = new javax.swing.JMenu();
         menuItemTelaCliente = new javax.swing.JMenuItem();
@@ -69,10 +112,10 @@ public class Servidor extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(500, 600));
 
-        campoTexto.setEditable(false);
-        campoTexto.setColumns(20);
-        campoTexto.setRows(5);
-        jScrollPane1.setViewportView(campoTexto);
+        pane.setEditable(false);
+        pane.setDragEnabled(true);
+        pane.setFocusable(false);
+        JScrollPane1.setViewportView(pane);
 
         menuArquivo.setText("Arquivo");
 
@@ -121,11 +164,11 @@ public class Servidor extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
+            .addComponent(JScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
+            .addComponent(JScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
         );
 
         pack();
@@ -195,8 +238,7 @@ public class Servidor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea campoTexto;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane JScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuArquivo;
@@ -205,5 +247,6 @@ public class Servidor extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemSair;
     private javax.swing.JMenuItem menuItemSobre;
     private javax.swing.JMenuItem menuItemTelaCliente;
+    private javax.swing.JTextPane pane;
     // End of variables declaration//GEN-END:variables
 }
