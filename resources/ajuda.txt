@@ -1,4 +1,5 @@
-Ao abrir a tela inicial do servidor, acima terão algumas opções:
+Ao abrir a tela inicial do servidor, no menu terão algumas
+opções:
 
 Arquivo
      - Novo Cliente: Abrir uma tela de cliente, e verificar o 
@@ -8,3 +9,10 @@ Arquivo
 Ajuda
      - Ajuda: Tela onde estão descritos as funções do sistema
      - Sobre: Tela que mostra os créditos dos desenvolvedores
+
+Na tela do Cliente, aperte o botão Iniciar para iniciar o
+semáforo.
+O semáforo irá ser mostrado no painel preto.
+
+Na tela do servidor, serão mostrados o estado atual do(s)
+semáforo(s).
