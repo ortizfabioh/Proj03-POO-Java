@@ -60,7 +60,7 @@ public class Servidor extends javax.swing.JFrame {
                 pane.setCaretPosition(pane.getDocument().getLength());  // Mantém o scroll embaixo
                 
                 try {
-                    Thread.sleep(3*1000);
+                    Thread.sleep(new Tempo().tempo());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

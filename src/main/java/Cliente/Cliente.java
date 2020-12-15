@@ -205,7 +205,7 @@ public class Cliente extends javax.swing.JFrame {
                     }
                 }
             };
-            t.schedule(tt, 0, 3*1000); // Primeiro tempo, período
+            t.schedule(tt, 0, new Tempo().tempo()); // Primeiro tempo, período
             
             iniciar.setEnabled(false);  // Desabilitar botão
         } catch (IOException ex) {

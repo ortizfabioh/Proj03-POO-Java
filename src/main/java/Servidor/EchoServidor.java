@@ -1,5 +1,6 @@
 package Servidor;
 
+import Comum.Tempo;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
@@ -19,11 +20,10 @@ public class EchoServidor extends Thread {
     @Override
     public void run() {        
         while(true) {
-            
             byte[] buffer = new byte[256];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
-            long fim = System.currentTimeMillis() + 3000;  // Momento exatamente daqui 3 segundos
+            long fim = System.currentTimeMillis() + new Tempo().tempo();  // Momento exatamente daqui 3 segundos
             while(System.currentTimeMillis() < fim) {  // Executar por 3 segundos
                 try {
                     socket.receive(packet);
