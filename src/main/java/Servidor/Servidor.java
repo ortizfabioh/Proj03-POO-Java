@@ -13,14 +13,13 @@ import javax.swing.text.StyledDocument;
 public class Servidor extends javax.swing.JFrame {
     private EchoServidor servidor; 
     private ThreadTexto thread;
-    private EchoCliente c = new EchoCliente();  // Pra poder usar o método tempoExecucao
         
     class ThreadTexto extends Thread {    
         @Override
         public void run() {
             Style padrao = pane.addStyle("padrao", null);
             StyleConstants.setFontSize(padrao, 15);
-            Style negrito = pane.addStyle("negrito", null);
+            Style negrito = pane.addStyle("negrito", padrao);
             StyleConstants.setBold(negrito, true);
             Style vermelho = pane.addStyle("vermelho", negrito);
             StyleConstants.setForeground(vermelho, Color.RED);
@@ -61,7 +60,7 @@ public class Servidor extends javax.swing.JFrame {
                 pane.setCaretPosition(pane.getDocument().getLength());  // Mantém o scroll embaixo
                 
                 try {
-                    Thread.sleep(c.tempoExecucao());  // Tempo de execução *Deve ser igual ao tempo do timer do cliente*
+                    Thread.sleep(3*1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -76,7 +75,7 @@ public class Servidor extends javax.swing.JFrame {
         servidor.start();
         
         thread = new ThreadTexto();
-        thread.setDaemon(true);  // Daemon Thread é pra oferecer serviço à Thread User
+        thread.setDaemon(true);
         thread.start();
     }
 

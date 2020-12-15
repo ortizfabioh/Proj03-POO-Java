@@ -26,9 +26,5 @@ public class EchoCliente extends Thread{
         enviarEcho("OFF");
         socket.close();
     }
-    
-    public int tempoExecucao() {  // Facilitar a escrita do tempo de execução
-        return 2*1000;
-    }
 }
 

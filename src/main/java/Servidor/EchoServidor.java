@@ -23,8 +23,8 @@ public class EchoServidor extends Thread {
             byte[] buffer = new byte[256];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
-            long fim = System.currentTimeMillis() + 2000;  // Momento exatamente daqui 2 segundos
-            while(System.currentTimeMillis() < fim) {  // Executar por 2 segundos
+            long fim = System.currentTimeMillis() + 3000;  // Momento exatamente daqui 3 segundos
+            while(System.currentTimeMillis() < fim) {  // Executar por 3 segundos
                 try {
                     socket.receive(packet);
                 } catch (IOException e) {
