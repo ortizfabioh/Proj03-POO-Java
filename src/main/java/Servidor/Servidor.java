@@ -38,7 +38,7 @@ public class Servidor extends javax.swing.JFrame {
                     if(lista.size() > 0) {  // Existe cliente conectado
                         for(String i : lista) {
                             String[] split = i.split("> ");  // Separa a mensgem da identificação
-                            doc.insertString(doc.getLength(), split[0], padrao);  // Printa identificação
+                            doc.insertString(doc.getLength(), "     "+split[0], padrao);  // Printa identificação
                             switch(split[1]) {  // printa mensagem
                                 case "VERMELHO\n":
                                     doc.insertString(doc.getLength(), " "+split[1], vermelho); break;

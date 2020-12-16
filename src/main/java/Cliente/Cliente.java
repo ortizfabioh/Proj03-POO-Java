@@ -81,7 +81,6 @@ public class Cliente extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cliente - Semáforo");
 
-        semaforo.setBackground(new java.awt.Color(153, 153, 153));
         semaforo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
         semaforo.setForeground(new java.awt.Color(51, 51, 51));
         semaforo.setMinimumSize(new java.awt.Dimension(320, 100));
@@ -149,7 +148,7 @@ public class Cliente extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 296, Short.MAX_VALUE)
                         .addComponent(iniciar))
-                    .addComponent(semaforo, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE))
+                    .addComponent(semaforo, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
